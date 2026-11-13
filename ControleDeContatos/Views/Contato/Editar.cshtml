@@ -1,0 +1,68 @@
+﻿@model ContatoModel
+@{
+    ViewData["Title"] = "Editar Contato";
+}
+
+<div class="text-center mb-4">
+    <h1 class="display-4">Editar Contato</h1>
+</div>
+
+<form asp-controller="Contato" asp-action="Alterar" method="post">
+    @* Informar o Id de forma oculta *@
+    <input type="hidden" asp-for="Id" />
+
+    <div class="mb-3">
+        <label asp-for="Nome" class="form-label">Nome</label>
+        <input type="text" asp-for="Nome" class="form-control" placeholder="Digite o nome do contato">
+        <span asp-validation-for="Nome" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Email" class="form-label">E-mail</label>
+        <input type="email" asp-for="Email" class="form-control" placeholder="Digite o e-mail do contato">
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Celular" class="form-label">Celular</label>
+        <input type="text" asp-for="Celular" class="form-control celular-mask" placeholder="Digite o celular do contato" maxlength="15">
+        <span asp-validation-for="Celular" class="text-danger"></span>
+    </div>
+
+    <div class="d-grid gap-2">
+        <button type="submit" class="btn btn-primary">Alterar</button>
+        <a class="btn btn-secondary" asp-action="Index" asp-controller="Contato" role="button">Voltar</a>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var inputCelular = document.querySelector(".celular-mask");
+
+            if (inputCelular) {
+                // 1. Função isolada para aplicar a formatação
+                function aplicarMascara(valor) {
+                    var x = valor.replace(/\D/g, '').match(/(\d{0,2})(\d{0,5})(\d{0,4})/);
+                    if (!x[2]) {
+                        return x[1];
+                    } else if (!x[3]) {
+                        return '(' + x[1] + ') ' + x[2];
+                    } else {
+                        return '(' + x[1] + ') ' + x[2] + '-' + x[3];
+                    }
+                }
+
+                // 2. Aplica a máscara IMEDIATAMENTE ao carregar a página com o valor que veio do banco
+                if (inputCelular.value) {
+                    inputCelular.value = aplicarMascara(inputCelular.value);
+                }
+
+                // 3. Escuta o evento de digitação do usuário normalmente
+                inputCelular.addEventListener("input", function (e) {
+                    e.target.value = aplicarMascara(e.target.value);
+                });
+            }
+        });
+    </script>
+}

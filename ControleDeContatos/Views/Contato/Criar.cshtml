@@ -1,0 +1,61 @@
+﻿@model ContatoModel
+@{
+    ViewData["Title"] = "Criar Contato";
+}
+
+<div class="text-center mb-4">
+    <h1 class="display-4">Criar Contato</h1>
+</div>
+
+<form asp-controller="Contato" asp-action="Criar" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+    <div class="mb-3">
+        <label asp-for="Nome" class="form-label">Nome</label>
+        <input type="text" asp-for="Nome" class="form-control" placeholder="Digite o nome do contato">
+        <span asp-validation-for="Nome" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Email" class="form-label">E-mail</label>
+        <input type="email" asp-for="Email" class="form-control" placeholder="Digite o e-mail do contato">
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Celular" class="form-label">Celular</label>
+        <input type="text" asp-for="Celular" class="form-control celular-mask" placeholder="Digite o celular do contato" maxlength="15">
+        <span asp-validation-for="Celular" class="text-danger"></span>
+    </div>
+
+    <div class="d-grid gap-2">
+        <button type="submit" class="btn btn-primary">Adicionar</button>
+        <a class="btn btn-secondary" asp-controller="Contato" asp-action="Index" role="button">Voltar</a>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var inputCelular = document.querySelector('.celular-mask');
+
+            if (inputCelular) {
+                inputCelular.addEventListener('input', function (e) {
+                    var x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,5})(\d{0,4})/);
+
+                    if (!x[2]) {
+                        e.target.value = x[1];
+                    }
+                    else if (!x[3]) {
+                        e.target.value = '(' + x[1] + ') ' + x[2];
+                    }
+                    else {
+                        e.target.value = '(' + x[1] + ') ' + x[2] + '-' + x[3];
+                    }
+                });
+            }
+        });
+    </script>
+}

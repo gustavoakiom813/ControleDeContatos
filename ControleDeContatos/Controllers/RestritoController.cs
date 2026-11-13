@@ -1,0 +1,14 @@
+﻿using ControleDeContatos.Filters;
+using Microsoft.AspNetCore.Mvc;
+
+namespace ControleDeContatos.Controllers
+{
+    public class RestritoController : Controller
+    {
+        [PaginaUsuarioLogado]
+        public IActionResult Index()
+        {
+            return View();
+        }
+    }
+}

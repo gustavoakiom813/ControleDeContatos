@@ -1,0 +1,42 @@
+﻿@model RedefinirSenhaModel
+@{
+    Layout = "_LayoutDeslogado";
+    ViewData["Title"] = "Redefinir Senha";
+}
+
+@if (TempData["MensagemSucesso"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show mb-3" role="alert">
+        @TempData["MensagemSucesso"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (TempData["MensagemErro"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["MensagemErro"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<form asp-controller="Login" asp-action="EnviarLinkParaRedefinirSenha" method="post">
+    @Html.AntiForgeryToken()
+
+    <div class="mb-3">
+        <label asp-for="Login" class="form-label">Login</label>
+        <input type="text" asp-for="Login" class="form-control" placeholder="Digite seu login">
+        <span asp-validation-for="Login" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Email" class="form-label">E-mail</label>
+        <input type="text" asp-for="Email" class="form-control" placeholder="Digite o email">
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="d-grid gap-2">
+        <button type="submit" class="btn btn-primary">Redefinir Senha</button>
+        <a class="btn btn-secondary" asp-action="Index" asp-controller="Login" role="button">Voltar</a>
+    </div>
+</form>
