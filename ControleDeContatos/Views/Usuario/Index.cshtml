@@ -36,6 +36,7 @@
                 <th scope="col">Login</th>
                 <th scope="col">E-mail</th>
                 <th scope="col">Perfil</th>
+                <th scope="col">Total</th>
                 <th scope="col">Data de Cadastro</th>
                 <th scope="col" class="text-center" style="width: 15%">Ações</th>
             </tr>
@@ -55,6 +56,11 @@
                                 @(usuario.Perfil == ControleDeContatos.Enum.PerfilEnum.Admin ? "Administrador" : "Padrão")
                             </span>
                         </td>
+                        <td>
+                            <a href="javascript:" usuario-id="@usuario.Id" class="btn btn-success btn-sm btn-total-contatos">
+                                @(usuario.Contatos != null && usuario.Contatos.Any() ? usuario.Contatos.Count() : 0)
+                            </a>
+                        </td>
                         <td>@usuario.DataCadastro.ToString("dd/MM/yyyy HH:mm")</td>
                         <td class="text-center">
                             <div class="btn-group" role="group">
@@ -68,9 +74,24 @@
             else
             {
                 <tr>
-                    <td valign="top" colspan="7" class="text-center text-muted">Nenhum usuário encontrado</td>
+                    <td valign="top" colspan="4" class="text-center text-muted">Nenhum usuário encontrado</td>
                 </tr>
             }
         </tbody>
     </table>
+
+    <div id="modalContatosUsuario" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Listagem de contatos</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="listaContatosUsuario">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

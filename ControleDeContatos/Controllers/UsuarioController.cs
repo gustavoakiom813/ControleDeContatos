@@ -10,10 +10,18 @@ namespace ControleDeContatos.Controllers
     public class UsuarioController : Controller
     {
         private readonly IUsuarioRepositorio _usuarioRepositorio;
+        private readonly IContatoRepositorio _contatoRepositorio;
 
-        public UsuarioController(IUsuarioRepositorio usuarioRepositorio)
+        public UsuarioController(IUsuarioRepositorio usuarioRepositorio, IContatoRepositorio contatoUsuario)
         {
             _usuarioRepositorio = usuarioRepositorio;
+            _contatoRepositorio = contatoUsuario;
+        }
+
+        public IActionResult ListarContatosPorUsuarioId(int id)
+        { 
+            List<ContatoModel> contatos = _contatoRepositorio.BuscarTodos(id);
+            return PartialView("_ContatosUsuario", contatos);
         }
 
         public IActionResult Index()

@@ -8,11 +8,11 @@ $(document).ready(function () {
     var configContatos = {
         columnDefs: [
             {
-                targets: 3, // Coluna Celular
+                targets: 3, // Índice 3 corresponde à 4ª coluna (Celular)
                 defaultContent: "",
                 render: function (data, type, row) {
                     if (type === 'display' && data) {
-                        var num = data.replace(/\D/g, '');
+                        var num = String(data).replace(/\D/g, '');
                         if (num.length === 11) {
                             return num.replace(/^(\d{2})(\d{5})(\d{4})$/, '($1) $2-$3');
                         } else if (num.length === 10) {
@@ -21,15 +21,9 @@ $(document).ready(function () {
                     }
                     return data;
                 }
-            },
-            {
-                targets: 4, // Coluna de ações dos contatos
-                orderable: false,
-                searchable: false // Corrigido de 'searching' para 'searchable'
             }
         ]
     };
-
 
     // Configurações específicas para a tabela de usuários
     // Altere ou adicione as colunas conforme a realidade da tabela de usuários
@@ -47,6 +41,23 @@ $(document).ready(function () {
     // Inicializa passando as configurações customizadas
     getDataTable('#table-contatos', configContatos);
     getDataTable('#table-usuarios', configUsuarios);
+
+    // Use $(document).on para funcionar mesmo após paginar ou pesquisar no DataTable
+    $(document).on('click', '.btn-total-contatos', function () {
+        var usuarioId = $(this).attr('usuario-id');
+
+        $.ajax({
+            type: "GET",
+            url: '/Usuario/ListarContatosPorUsuarioId/' + usuarioId,
+            success: function (result) {
+                $("#listaContatosUsuario").html(result);
+                $("#modalContatosUsuario").modal();
+                getDataTable('#table-contatos-usuario');
+            }
+        });
+
+        $('#modalContatosUsuario').modal('show');
+    });
 });
 
 // A função agora aceita um objeto 'customConfig'
